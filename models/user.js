@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
 		status: DataTypes.ENUM
   }, {});
   User.associate = function(models) {
-    // associations can be defined here
+		User.hasOne(models.Patient);
+		User.hasOne(models.Admin);
   };
   return User;
 };
