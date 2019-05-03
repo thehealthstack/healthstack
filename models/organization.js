@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		status: DataTypes.ENUM
   }, {});
   Organization.associate = function(models) {
-    // associations can be defined here
+    Organization.hasMany(models.MedicalResult);
   };
   return Organization;
 };
