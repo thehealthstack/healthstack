@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     laboratoryId: DataTypes.STRING
   }, {});
   MedicalResult.associate = function(models) {
-    // associations can be defined here
+    MedicalResult.hasMany(models.MedicalResultFile);
   };
   return MedicalResult;
 };
