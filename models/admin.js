@@ -5,7 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     roles: DataTypes.ENUM
   }, {});
   Admin.associate = function(models) {
-    // associations can be defined here
+		Admin.belongsTo(models.Organization);
+		Admin.hasMany(models.MedicalResult);
+		Admin.hasMany(models.Transaction);
   };
   return Admin;
 };
