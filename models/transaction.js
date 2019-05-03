@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     smsTransactionStatus: DataTypes.ENUM('success', 'failed')
   }, {});
   Transaction.associate = function(models) {
-    // associations can be defined here
+    Transaction.belongsTo(models.MedicalResult);
   };
   return Transaction;
 };
