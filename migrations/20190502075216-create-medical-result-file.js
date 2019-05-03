@@ -6,10 +6,10 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
 				type: Sequelize.UUID,
-				defaultValue: Sequelize.literal('uuid_generate_v4()')
+				defaultValue: Sequelize.UUIDV4
       },
       fileUrl: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
