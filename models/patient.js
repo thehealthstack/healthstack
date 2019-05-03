@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const Patient = sequelize.define('Patient', {
   }, {});
   Patient.associate = function(models) {
-    // associations can be defined here
+		Patient.hasMany(models.MedicalResult);
+		Patient.hasMany(models.Transaction);
   };
   return Patient;
 };
