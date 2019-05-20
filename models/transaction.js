@@ -1,11 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Transaction = sequelize.define('Transaction', {
+  const transaction = sequelize.define('transaction', {
     emailTransactionStatus: DataTypes.ENUM('success', 'failed'),
     smsTransactionStatus: DataTypes.ENUM('success', 'failed')
   }, {});
-  Transaction.associate = function(models) {
-    Transaction.belongsTo(models.MedicalResult);
+  transaction.associate = function(models) {
+    transaction.belongsTo(models.medicalResult);
   };
-  return Transaction;
+  return transaction;
 };

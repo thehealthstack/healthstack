@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Organization = sequelize.define('Organization', {
+  const organization = sequelize.define('organization', {
     name: DataTypes.STRING,
     telephone: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
 		address: DataTypes.STRING,
 		status: DataTypes.ENUM
   }, {});
-  Organization.associate = function(models) {
-    Organization.hasMany(models.MedicalResult);
+  organization.associate = function(models) {
+    organization.hasMany(models.medicalResult);
   };
-  return Organization;
+  return organization;
 };

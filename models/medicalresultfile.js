@@ -1,10 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const MedicalResultFile = sequelize.define('MedicalResultFile', {
+  const medicalResultFile = sequelize.define('medicalresultfile', {
     fileUrl: DataTypes.TEXT
   }, {});
-  MedicalResultFile.associate = function(models) {
+  medicalResultFile.associate = function(models) {
 		// associations can be defined here
   };
-  return MedicalResultFile;
+  return medicalResultFile;
 };

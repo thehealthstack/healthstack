@@ -1,10 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const MedicalResult = sequelize.define('MedicalResult', {
+  const medicalResult = sequelize.define('medicalResult', {
     laboratoryId: DataTypes.STRING
   }, {});
-  MedicalResult.associate = function(models) {
-    MedicalResult.hasMany(models.MedicalResultFile);
+  medicalResult.associate = function(models) {
+    medicalResult.hasMany(models.medicalResultFile);
   };
-  return MedicalResult;
+  return medicalResult;
 };

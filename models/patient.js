@@ -1,10 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Patient = sequelize.define('Patient', {
+  const patient = sequelize.define('patient', {
   }, {});
-  Patient.associate = function(models) {
-		Patient.hasMany(models.MedicalResult);
-		Patient.hasMany(models.Transaction);
+  patient.associate = function(models) {
+		patient.hasMany(models.medicalResult);
+		patient.hasMany(models.transaction);
   };
-  return Patient;
+  return patient;
 };
