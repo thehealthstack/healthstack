@@ -1,13 +1,24 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const admin = sequelize.define('admin', {
+  const Admin = sequelize.define('admin', {
+		adminId: {
+			primaryKey: true,
+			type: DataTypes.UUID,
+			defaultValue: sequelize.literal('uuid_generate_v4()')
+		},
+		userId: {
+			type: DataTypes.UUID,
+			references: {
+				model: 'users',
+				key: 'userId'
+			}
+		},
     password: DataTypes.STRING,
-    roles: DataTypes.ENUM
   }, {});
-  admin.associate = function(models) {
-		admin.belongsTo(models.organization);
-		admin.hasMany(models.medicalResult);
-		admin.hasMany(models.transaction);
+  Admin.associate = function(models) {
+		Admin.belongsTo(models.organization, { foreignKey: 'organizationId'});
+		Admin.hasMany(models.medicalresult, { foreignKey: 'adminId'});
+		Admin.hasMany(models.transaction, { foreignKey: 'adminId'});
   };
-  return admin;
+  return Admin;
 };

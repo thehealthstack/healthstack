@@ -1,15 +1,27 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const user = sequelize.define('user', {
+  const User = sequelize.define('user', {
+		userId: {
+			primaryKey: true,
+			type: DataTypes.UUID,
+			defaultValue: sequelize.literal('uuid_generate_v4()')
+		},
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     email: DataTypes.STRING,
 		telephone: DataTypes.STRING,
-		status: DataTypes.ENUM
+		status: {
+			type: DataTypes.ENUM,
+			values: ['active', 'pending']
+		},
+		role: {
+			type: DataTypes.ENUM,
+			values: ['patient', 'healthstack', 'lab agent']
+		}
   }, {});
-  user.associate = function(models) {
-		user.hasOne(models.patient);
-		user.hasOne(models.admin);
+  User.associate = function(models) {
+		User.hasOne(models.patient, { foreignKey: 'userId'});
+		User.hasOne(models.admin, { foreignKey: 'userId'});
   };
-  return user;
+  return User;
 };

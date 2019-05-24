@@ -8,15 +8,49 @@ module.exports = {
 					allowNull: false,
 					primaryKey: true,
 					type: Sequelize.UUID,
-					defaultValue: Sequelize.literal('uuid_generate_v4()')
+					defaultValue: Sequelize.literal('uuid_generate_v4()'),
+					validate: {
+						isUUID: {
+							args: 4,
+							msg: 'patientId has to be a uuid'
+						}
+
+					}
+				},
+				userId: {
+					allowNull: false,
+					type: Sequelize.UUID,
+					references: {
+						model: 'users',
+						key: 'userId'
+					},
+					validate: {
+						isUUID: {
+							args: 4,
+							msg: 'userId has to be a uuid'
+						}
+
+					}
 				},
 				createdAt: {
 					allowNull: false,
-					type: Sequelize.DATE
+					type: Sequelize.DATE,
+					validate: {
+						isDate: {
+							args: true,
+							msg: 'createdAt has to be a date string'
+						}
+					}
 				},
 				updatedAt: {
 					allowNull: false,
-					type: Sequelize.DATE
+					type: Sequelize.DATE,
+					validate: {
+						isDate: {
+							args: true,
+							msg: 'updatedAt has to be a date string'
+						}
+					}
 				}
 			});
 		});

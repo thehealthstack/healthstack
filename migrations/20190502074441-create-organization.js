@@ -2,9 +2,9 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 		return queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
-    .then(() => {
-			return queryInterface.createTable('users', {
-				userId: {
+      .then(() => {
+			return queryInterface.createTable('organizations', {
+				organizationId: {
 					allowNull: false,
 					primaryKey: true,
 					type: Sequelize.UUID,
@@ -12,36 +12,18 @@ module.exports = {
 					validate: {
 						isUUID: {
 							args: 4,
-							msg: 'userId has to be a uuid'
+							msg: 'organizationId has to be a uuid'
 						}
 
 					}
 				},
-				firstName: {
-					type: Sequelize.STRING,
-					validate: {
-						is: {
-							args: ["^[a-z]+$",'i'],
-							msg: 'firstName accepts only letters'
-						}
-					}
-				},
-				lastName: {
-					type: Sequelize.STRING,
-					validate: {
-						is: {
-							args: ["^[a-z]+$",'i'],
-							msg: 'lastName accepts only letters'
-						}
-					}
-				},
-				email: {
+				name: {
 					type: Sequelize.STRING,
 					unique: true,
 					validate: {
-						isEmail: {
-							args: true,
-							msg: 'email format not valid'
+						is: {
+							args: ["^[a-z]+$",'i'],
+							msg: 'name accepts only letters'
 						}
 					}
 				},
@@ -55,6 +37,22 @@ module.exports = {
 						}
 					}
 				},
+				email: {
+					type: Sequelize.STRING,
+					unique: true,
+					validate: {
+						isEmail: {
+							args: true,
+							msg: 'email format not valid'
+						}
+					}
+				},
+				location: {
+					type: Sequelize.STRING
+				},
+				address: {
+					type: Sequelize.STRING
+				},
 				status: {
 					type: Sequelize.ENUM,
 					values: ['active', 'pending'],
@@ -62,16 +60,6 @@ module.exports = {
 						isIn: {
 							args: [['active', 'pending']],
 							msg: "status must be either pending or active"
-						}
-					}
-				},
-				role: {
-					type: Sequelize.ENUM,
-					values: ['patient', 'healthstack', 'lab agent'],
-					validate: {
-						isIn: {
-							args: [['patient', 'healthstack', 'lab agent']],
-							msg: "Role must be either patient, healthstack or lab agent"
 						}
 					}
 				},
@@ -99,6 +87,6 @@ module.exports = {
 		});
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('organizations');
   }
 };

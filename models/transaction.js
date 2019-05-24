@@ -1,11 +1,22 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const transaction = sequelize.define('transaction', {
-    emailTransactionStatus: DataTypes.ENUM('success', 'failed'),
-    smsTransactionStatus: DataTypes.ENUM('success', 'failed')
+  const Transaction = sequelize.define('transaction', {
+		transactionId: {
+			primaryKey: true,
+			type: DataTypes.UUID,
+			defaultValue: sequelize.literal('uuid_generate_v4()')
+		},
+    emailTransactionStatus: {
+			type: DataTypes.ENUM,
+			values: ['accepted', 'success', 'failed']
+		},
+    smsTransactionStatus: {
+			type: DataTypes.ENUM,
+			values: ['accepted', 'success', 'failed']
+		}
   }, {});
-  transaction.associate = function(models) {
-    transaction.belongsTo(models.medicalResult);
+  Transaction.associate = function(models) {
+    Transaction.belongsTo(models.medicalresult, { foreignKey: 'adminId'});
   };
-  return transaction;
+  return Transaction;
 };

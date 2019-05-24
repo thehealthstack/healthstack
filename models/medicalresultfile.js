@@ -1,10 +1,15 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const medicalResultFile = sequelize.define('medicalresultfile', {
+  const MedicalResultFile = sequelize.define('medicalresultfile', {
+		medicalResultFileId: {
+			primaryKey: true,
+			type: DataTypes.UUID,
+			defaultValue: sequelize.literal('uuid_generate_v4()')
+		},
     fileUrl: DataTypes.TEXT
   }, {});
-  medicalResultFile.associate = function(models) {
+  MedicalResultFile.associate = function(models) {
 		// associations can be defined here
   };
-  return medicalResultFile;
+  return MedicalResultFile;
 };

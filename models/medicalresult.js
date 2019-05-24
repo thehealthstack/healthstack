@@ -1,10 +1,15 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const medicalResult = sequelize.define('medicalResult', {
+  const MedicalResult = sequelize.define('medicalresult', {
+		medicalResultId: {
+			primaryKey: true,
+			type: DataTypes.UUID,
+			defaultValue: sequelize.literal('uuid_generate_v4()')
+		},
     laboratoryId: DataTypes.STRING
   }, {});
-  medicalResult.associate = function(models) {
-    medicalResult.hasMany(models.medicalResultFile);
+  MedicalResult.associate = function(models) {
+    MedicalResult.hasMany(models.medicalresultfile, { foreignKey: 'medicalResultId'});
   };
-  return medicalResult;
+  return MedicalResult;
 };
