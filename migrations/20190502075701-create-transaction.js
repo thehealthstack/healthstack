@@ -8,34 +8,15 @@ module.exports = {
 					allowNull: false,
 					primaryKey: true,
 					type: Sequelize.UUID,
-					defaultValue: Sequelize.literal('uuid_generate_v4()'),
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'transactionId has to be a uuid'
-						}
-
-					}
+					defaultValue: Sequelize.literal('uuid_generate_v4()')
 				},
 				emailTransactionStatus: {
 					type: Sequelize.ENUM,
-					values: ['accepted', 'success', 'failed'],
-					validate: {
-						isIn: {
-							args: [['accepted', 'success', 'failed']],
-							msg: "Email status must be either accepted, success or failed"
-						}
-					}
+					values: ['created', 'accepted', 'success', 'failed']
 				},
 				smsTransactionStatus: {
 					type: Sequelize.ENUM,
-					values: ['accepted', 'success', 'failed'],
-					validate: {
-						isIn: {
-							args: [['accepted', 'success', 'failed']],
-							msg: "Sms status must be either accepted, success or failed"
-						}
-					}
+					values: ['created', 'accepted', 'success', 'failed']
 				},
 				patientId: {
 					allowNull: false,
@@ -43,13 +24,6 @@ module.exports = {
 					references: {
 						model: 'patients',
 						key: 'patientId'
-					},
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'patientId has to be a uuid'
-						}
-
 					}
 				},
 				medicalResultId: {
@@ -58,13 +32,6 @@ module.exports = {
 					references: {
 						model: 'medicalresults',
 						key: 'medicalResultId'
-					},
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'medicalResultId has to be a uuid'
-						}
-
 					}
 				},
 				adminId: {
@@ -73,34 +40,15 @@ module.exports = {
 					references: {
 						model: 'admins',
 						key: 'adminId'
-					},
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'adminId has to be a uuid'
-						}
-
 					}
 				},
 				createdAt: {
 					allowNull: false,
-					type: Sequelize.DATE,
-					validate: {
-						isDate: {
-							args: true,
-							msg: 'createdAt has to be a date string'
-						}
-					}
+					type: Sequelize.DATE
 				},
 				updatedAt: {
 					allowNull: false,
-					type: Sequelize.DATE,
-					validate: {
-						isDate: {
-							args: true,
-							msg: 'updatedAt has to be a date string'
-						}
-					}
+					type: Sequelize.DATE
 				}
 			});
 		});

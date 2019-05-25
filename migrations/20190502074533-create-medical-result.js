@@ -8,14 +8,7 @@ module.exports = {
 					allowNull: false,
 					primaryKey: true,
 					type: Sequelize.UUID,
-					defaultValue: Sequelize.literal('uuid_generate_v4()'),
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'medicalResultId has to be a uuid'
-						}
-
-					}
+					defaultValue: Sequelize.literal('uuid_generate_v4()')
 				},
 				adminId: {
 					allowNull: false,
@@ -23,13 +16,6 @@ module.exports = {
 					references: {
 						model: 'admins',
 						key: 'adminId'
-					},
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'adminId has to be a uuid'
-						}
-
 					}
 				},
 				patientId: {
@@ -38,13 +24,6 @@ module.exports = {
 					references: {
 						model: 'patients',
 						key: 'patientId'
-					},
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'patientId has to be a uuid'
-						}
-
 					}
 				},
 				organizationId: {
@@ -53,34 +32,15 @@ module.exports = {
 					references: {
 						model: 'organizations',
 						key: 'organizationId'
-					},
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'organizationId has to be a uuid'
-						}
-
 					}
 				},
 				createdAt: {
 					allowNull: false,
-					type: Sequelize.DATE,
-					validate: {
-						isDate: {
-							args: true,
-							msg: 'createdAt has to be a date string'
-						}
-					}
+					type: Sequelize.DATE
 				},
 				updatedAt: {
 					allowNull: false,
-					type: Sequelize.DATE,
-					validate: {
-						isDate: {
-							args: true,
-							msg: 'updatedAt has to be a date string'
-						}
-					}
+					type: Sequelize.DATE
 				}
 			});
 		});

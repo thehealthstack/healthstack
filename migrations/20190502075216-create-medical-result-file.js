@@ -8,24 +8,11 @@ module.exports = {
 					allowNull: false,
 					primaryKey: true,
 					type: Sequelize.UUID,
-					defaultValue: Sequelize.literal('uuid_generate_v4()'),
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'medicalResultFileId has to be a uuid'
-						}
-
-					}
+					defaultValue: Sequelize.literal('uuid_generate_v4()')
 				},
 				fileUrl: {
 					type: Sequelize.TEXT,
-					unique: true,
-					validate: {
-						isUrl: {
-							args: true,
-							msg: 'fileUrl has to be a valid URL'
-						}
-					}
+					unique: true
 				},
 				medicalResultId: {
 					allowNull: false,
@@ -33,34 +20,15 @@ module.exports = {
 					references: {
 						model: 'medicalresults',
 						key: 'medicalResultId'
-					},
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'medicalResultId has to be a uuid'
-						}
-
 					}
 				},
 				createdAt: {
 					allowNull: false,
-					type: Sequelize.DATE,
-					validate: {
-						isDate: {
-							args: true,
-							msg: 'createdAt has to be a date string'
-						}
-					}
+					type: Sequelize.DATE
 				},
 				updatedAt: {
 					allowNull: false,
-					type: Sequelize.DATE,
-					validate: {
-						isDate: {
-							args: true,
-							msg: 'updatedAt has to be a date string'
-						}
-					}
+					type: Sequelize.DATE
 				}
 			});
 		});

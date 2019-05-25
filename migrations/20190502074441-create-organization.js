@@ -8,44 +8,19 @@ module.exports = {
 					allowNull: false,
 					primaryKey: true,
 					type: Sequelize.UUID,
-					defaultValue: Sequelize.literal('uuid_generate_v4()'),
-					validate: {
-						isUUID: {
-							args: 4,
-							msg: 'organizationId has to be a uuid'
-						}
-
-					}
+					defaultValue: Sequelize.literal('uuid_generate_v4()')
 				},
 				name: {
 					type: Sequelize.STRING,
-					unique: true,
-					validate: {
-						is: {
-							args: ["^[a-z]+$",'i'],
-							msg: 'name accepts only letters'
-						}
-					}
+					unique: true
 				},
 				telephone: {
 					type: Sequelize.STRING,
-					unique: true,
-					validate: {
-						is: {
-							args: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g,
-							msg: 'telephone number format is not valid'
-						}
-					}
+					unique: true
 				},
 				email: {
 					type: Sequelize.STRING,
-					unique: true,
-					validate: {
-						isEmail: {
-							args: true,
-							msg: 'email format not valid'
-						}
-					}
+					unique: true
 				},
 				location: {
 					type: Sequelize.STRING
@@ -55,33 +30,19 @@ module.exports = {
 				},
 				status: {
 					type: Sequelize.ENUM,
-					values: ['active', 'pending'],
-					validate: {
-						isIn: {
-							args: [['active', 'pending']],
-							msg: "status must be either pending or active"
-						}
-					}
+					values: ['active', 'pending']
+				},
+				category: {
+					type: Sequelize.ENUM,
+					values: ['admin', 'laboratory', 'hospital', 'pharmacy']
 				},
 				createdAt: {
 					allowNull: false,
-					type: Sequelize.DATE,
-					validate: {
-						isDate: {
-							args: true,
-							msg: 'createdAt has to be a date string'
-						}
-					}
+					type: Sequelize.DATE
 				},
 				updatedAt: {
 					allowNull: false,
-					type: Sequelize.DATE,
-					validate: {
-						isDate: {
-							args: true,
-							msg: 'updatedAt has to be a date string'
-						}
-					}
+					type: Sequelize.DATE
 				}
 			});
 		});
