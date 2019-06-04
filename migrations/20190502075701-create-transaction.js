@@ -12,11 +12,19 @@ module.exports = {
 				},
 				emailTransactionStatus: {
 					type: Sequelize.ENUM,
-					values: ['created', 'accepted', 'success', 'failed']
+					values: ['accepted', 'success', 'failed']
 				},
 				smsTransactionStatus: {
 					type: Sequelize.ENUM,
-					values: ['created', 'accepted', 'success', 'failed']
+					values: ['accepted', 'success', 'failed']
+				},
+				emailMessageId: {
+					type: Sequelize.STRING,
+					unique: true
+				},
+				smsMessageId: {
+					type: DataTypes.STRING,
+					unique: true
 				},
 				patientId: {
 					allowNull: false,
