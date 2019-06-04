@@ -44,7 +44,8 @@ organizationRouter.post('/organizations', [
 		email: req.body.email,
 		location: req.body.location,
 		address: req.body.address,
-		status: req.body.status,
+		status: 'pending',
+		category: req.body.category,
 		createdAt: new Date(),
 		updatedAt: new Date()
 	})
@@ -58,9 +59,9 @@ organizationRouter.post('/organizations', [
 	});
 });
 
-organizationRouter.put('/organizations', [
-	check('telephone').matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,'g').withMessage('Telephone number is not valid'),
-	check('email').isEmail().withMessage('Email format not valid')
+organizationRouter.put('/organizations/:id', [
+	check('telephone').optional().matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,'g').withMessage('Telephone number is not valid'),
+	check('email').optional().isEmail().withMessage('Email format not valid')
 ], (req, res, next) => {
 	const errors = validationResult(req);
   	if (!errors.isEmpty()) {
@@ -69,7 +70,7 @@ organizationRouter.put('/organizations', [
 	
 	organization.update(req.body, { returning: true, where: { organizationId: req.params.id }})
 	.then(resp => {
-		res.status(200).json(resp);
+		res.status(200).json(resp[1]);
 	})
 	.catch(err => {
 		err.status = 500;
@@ -81,7 +82,7 @@ organizationRouter.put('/organizations', [
 organizationRouter.delete('/organizations/:id', (req, res, next) => {
 	organization.destroy({ where: { organizationId: req.params.id }})
 	.then(resp => {
-		res.status(200).json()
+		res.status(200).json({ msg: 'Organization deletion was successful'});
 	})
 	.catch(err => {
 		err.status = 500;
