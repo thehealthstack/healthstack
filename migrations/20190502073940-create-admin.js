@@ -11,7 +11,7 @@ module.exports = {
 					defaultValue: Sequelize.literal('uuid_generate_v4()')
 				},
 				role: {
-					type: DataTypes.ENUM,
+					type: Sequelize.ENUM,
 					values: ['healthstack', 'lab agent'],
 				},
 				password: {
