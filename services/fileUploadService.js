@@ -1,10 +1,10 @@
 const AWS = require('aws-sdk');
-const { awsAccessKeyId, awsSecretAccessKey, centrePasteurYaoundeBucket } = require('../config');
+const { awsAccessKeyId, awsSecretAccessKey, centrePasteurYaoundeBucket, region } = require('../config');
 
 AWS.config.update({
 	accessKeyId: awsAccessKeyId,
 	secretAccessKey: awsSecretAccessKey,
-	region: 'eu-west-1'});
+	region: region });
 
 let bucket = new AWS.S3({
     Bucket: centrePasteurYaoundeBucket
@@ -12,23 +12,25 @@ let bucket = new AWS.S3({
 
 exports.uploadfiles = (req, res, next) => {
 	let files = req.files;
-	let uploadedFiles = [];
-	files.map(file => {
+	
+	Promise.all(files.map(file => {
 		let params = {
-			Bucket: awsConfig.centrePasteurYaoundeBucket,
+			Bucket: centrePasteurYaoundeBucket,
         	Key: file.originalname,
         	Body: file.buffer,
         	ACL: 'public-read'
 		};
-		bucket.upload(params, (err, data) => {
-			if(err){
-				next(err);
-			}else{
-				uploadedFiles.push(data.Location);
-			}
-		});
+
+		return bucket.upload(params).promise();
+	}))
+	.then(uploadedObjects => {
+		res.locals.uploadedFiles = uploadedObjects.map(fileObject => fileObject.Location);
+		next();
+	})
+	.catch(err => {
+		err.status = 500;
+		err.msg = 'Could not upload file to AWS';
+		next(err);
 	});
-	req.body.uploadedFiles = uploadedFiles;
-	next(req);
 };
 
