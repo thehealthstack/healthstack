@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
 			values: ['accepted', 'success', 'failed'],
 			validate: {
 				isIn: {
-					args: [['created', 'accepted', 'success', 'failed']],
+					args: [['accepted', 'success', 'failed']],
 					msg: "Email status must be either accepted, success or failed"
 				}
 			}
@@ -29,10 +29,18 @@ module.exports = (sequelize, DataTypes) => {
 			values: ['accepted', 'success', 'failed'],
 			validate: {
 				isIn: {
-					args: [['created', 'accepted', 'success', 'failed']],
+					args: [['accepted', 'success', 'failed']],
 					msg: "Sms status must be either accepted, success or failed"
 				}
 			}
+		},
+		emailMessageId: {
+			type: DataTypes.STRING,
+			unique: true
+		},
+		smsMessageId: {
+			type: DataTypes.STRING,
+			unique: true
 		},
 		patientId: {
 			allowNull: false,
@@ -101,7 +109,7 @@ module.exports = (sequelize, DataTypes) => {
 		}
   }, {});
   Transaction.associate = function(models) {
-    Transaction.belongsTo(models.medicalresult, { foreignKey: 'adminId'});
+    Transaction.belongsTo(models.medicalresult, { foreignKey: 'medicalResultId'});
   };
   return Transaction;
 };
