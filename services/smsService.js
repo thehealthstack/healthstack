@@ -1,23 +1,48 @@
-const AWS = require('aws-sdk');
-const template = require('./smsTemplate');
-
+const AWS = require("aws-sdk");
+const { awsAccessKeyId, awsSecretAccessKey, region } = require('../config');
 
 AWS.config.update({
-	accessKeyId: "YOUR_ACCESS_KEY",
-	secretAccessKey: "YOUR_ACCESS_KEY",
-	region: 'eu-west-1'});
+  accessKeyId: awsAccessKeyId,
+  secretAccessKey: awsSecretAccessKey,
+  region: region
+});
 
-
-function setSmsParams(to){
-
-   let params = {
-	Message: template.message,
-	PhoneNumber: to, //E.164_PHONE_NUMBER
+const setSmsParams = (to, smsText) => {
+  let params = {
+	MessageAttributes: {
+		'AWS.SNS.SMS.SMSType': {
+		   DataType: 'String',
+		   StringValue: 'Transactional'
+		}
+	},
+    Message: smsText,
+    PhoneNumber: to //E.164_PHONE_NUMBER
   };
+  return params;
 }
 
+const generateSmsText = (lab, results) => {
+  resultLinks = "";
+  for (let result of results) {
+    resultLinks = results + "\n";
+  }
 
-function publishSMS(to){
-	return new AWS.SNS({apiVersion: '2010-03-31'}).publish(setSmsParams(to)).promise();
+  return `
+	Hello,
+	Hope you are enjoying your time. Here are the results of the 
+	exams you did at ${lab}:
+	${resultLinks}
+	Best,
+	${lab}
+	`;
 }
 
+const publishSMS = (to, smsText) => {
+  return new AWS.SNS({ apiVersion: "2010-03-31" })
+    .publish(setSmsParams(to, smsText))
+    .promise();
+}
+
+exports.setSmsParams = setSmsParams;
+exports.generateSmsText = generateSmsText;
+exports.publishSMS = publishSMS;
