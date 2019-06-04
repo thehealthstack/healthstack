@@ -95,7 +95,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = function(models) {
 		User.hasOne(models.patient, { foreignKey: 'userId'});
-		User.hasOne(models.admin, { foreignKey: 'userId'});
+		User.hasOne(models.admin, { foreignKey: 'userId' });
   };
   return User;
 };
