@@ -1,0 +1,8 @@
+{
+  "Template": {
+    "TemplateName": "MedicalResult",
+    "SubjectPart": "Medical Exam Results",
+    "HtmlPart": "<h4>Hello</h4><br/>, <p>Hope you are enjoying your time. Here are the results of the exams you did at {{lab}}:</p>{{results}}<br/><h4>Best,{{lab}}</h4>",
+    "TextPart": "Hello,\n Hope you are enjoying your time. Here are the results of the exams you did at {{lab}}:\n {{results}} \n Best, \n{{lab}}"
+  } 
+}
