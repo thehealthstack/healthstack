@@ -17,12 +17,6 @@ module.exports = (sequelize, DataTypes) => {
 		name: {
 			type: DataTypes.STRING,
 			unique: true,
-			validate: {
-				is: {
-					args: ["^[a-z]+$",'i'],
-					msg: 'name accepts only letters'
-				}
-			}
 		},
 		telephone: {
 			type: DataTypes.STRING,
