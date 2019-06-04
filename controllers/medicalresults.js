@@ -1,7 +1,8 @@
 const express = require('express');
 const multer = require('multer');
+const { check, validationResult } = require("express-validator/check");
 const { medicalresult, medicalresultfile, admin, patient } = require('../models');
-const { uploadfiles } = require('./services/fileUploadService');
+const { uploadfiles } = require('../services/fileUploadService');
 const medicalResultRouter = express.Router();
 const storage = multer.memoryStorage();
 const multerSetting = multer({ storage: storage });
@@ -32,44 +33,50 @@ medicalResultRouter.get('/medicalresults/:id', (req, res, next) => {
 	});
 });
 
-medicalResultRouter.post('/medicalresults', multerSetting.any(), uploadfiles);
-
-medicalResultRouter.post('/medicalresults', (req, res, next) => {
+medicalResultRouter.post('/medicalresults', multerSetting.any(), uploadfiles, (req, res, next) => {
 	medicalresult.create({
-		adminId: req.body.adminId,
+		adminId: req.session.user.admin.adminId,
 		patientId: req.body.patientId,
-		organizationId: req.body.organizationId,
-		medicalresultfiles: req.body.uploadedFiles,
+		organizationId: req.session.user.admin.organizationId,
+		medicalresultfiles: res.locals.uploadedFiles.map(file => {
+			return {
+				fileUrl: file,
+				createdAt: new Date(),
+				updatedAt: new Date()
+			};
+		}),
 		createdAt: new Date(),
 		updatedAt: new Date()
-	})
+	}, { include: [ medicalresultfile ] })
 	.then(medres => {
-		transaction.create({
-			emailTransactionStatus: 'created',
-			smsTransactionStatus: 'created',
-			patientId: resp[0].patientId,
-			medicalResultId: resp[0].medicalResultId,
-			adminId: resp[0].adminId,
-			createdAt: new Date(),
-			updatedAt: new Date()
-		})
-		.then(resp => {
-			//Push email and sms to Amazon
-		})
-		.catch(err => {
-			err.status = 500;
-			err.msg = 'Transaction creation failed'
-			next(err);
-		});
+		res.status(200).json(medres);
+		
 	})
 	.catch(err => {
 		err.status = 500;
-		err.msg = 'Failed to create medical result entity';
+		err.msg = 'Failed to create medical result';
 		next(err);
 	});
 });
 
-medicalResultRouter.put('/medicalresults/:id', (req, res, next) => {
+
+medicalResultRouter.put('/medicalresults/:id', [
+	check("adminId")
+      .isUUID()
+	  .withMessage("adminId should be UUID"),
+	check("patientId")
+      .isUUID()
+	  .withMessage("patientId should be UUID"),
+	check("organizationId")
+      .isUUID()
+	  .withMessage("organizationId should be UUID")
+], (req, res, next) => {
+
+	const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+	}
+
 	medicalresult.update(req.body, { returning: true,  where: { medicalResultId: req.params.id }})
 	.then(resp => {
 		if(resp.length === 0) res.status(404).json({ msg: 'Not Found'});
