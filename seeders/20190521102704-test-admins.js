@@ -1,24 +1,33 @@
-'use strict';
+"use strict";
+const bcrypt = require("bcrypt");
+const SALT_ROUNDS = 10;
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-		return queryInterface.sequelize.query("SELECT * FROM users WHERE email='vladimirfomene@gmail.com' \
-		 OR email='toto@pasteur-yaounde.org'", { type: Sequelize.QueryTypes.SELECT })
-		.then(results => {
-			let admins = [];
-			results.forEach(result => {
-				admins.push({
-					userId: result.userId,
-					password: 'password',
-					createdAt: new Date(),
-					updatedAt: new Date()
+    return Promise.all([queryInterface.sequelize
+      .query(
+        "SELECT * FROM organizations WHERE category='admin' AND name='HealthStack'",
+        { type: Sequelize.QueryTypes.SELECT }
+      ), queryInterface.sequelize
+			.query(
+				"SELECT * FROM users WHERE email='vladimirfomene@gmail.com'",
+				{ type: Sequelize.QueryTypes.SELECT }
+			)])
+      .then(([orgs, users]) => {
+				let admins = [];
+        admins.push({
+					userId: users[0].userId,
+					organizationId: orgs[0].organizationId,
+					role: 'healthstack',
+          password: bcrypt.hashSync('kovich2002', SALT_ROUNDS),
+          createdAt: new Date(),
+          updatedAt: new Date()
 				});
-			});
-			return queryInterface.bulkInsert('admins', admins, {});
-		});
+				return queryInterface.bulkInsert('admins', admins, {});
+      });
   },
 
   down: (queryInterface, Sequelize) => {
-		return queryInterface.bulkDelete('admins', null, {});
+    return queryInterface.bulkDelete("admins", null, {});
   }
 };
