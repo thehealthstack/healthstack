@@ -53,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
   Patient.associate = function(models) {
 		Patient.hasMany(models.medicalresult, { foreignKey: 'patientId'});
 		Patient.hasMany(models.transaction, { foreignKey: 'patientId'});
+		Patient.belongsTo(models.user, { foreignKey: 'userId'})
   };
   return Patient;
 };
