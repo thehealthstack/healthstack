@@ -9,6 +9,17 @@ module.exports = {
     		location: 'Yaounde, rue hopital centrale',
 			address: 'BP 1274, Yaounde',
 			status: 'active',
+			category: 'laboratory',
+			createdAt: new Date(),
+			updatedAt: new Date()
+		},
+		{
+			name: 'HealthStack',
+			telephone: '+237690346872',
+			email: 'healthstacker@gmail.com',
+			location: 'Yaounde, Eleveur Street',
+			category: 'admin',
+			status: 'active',
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}])
