@@ -82,6 +82,7 @@ module.exports = (sequelize, DataTypes) => {
 		Admin.belongsTo(models.organization, { foreignKey: 'organizationId'});
 		Admin.hasMany(models.medicalresult, { foreignKey: 'adminId'});
 		Admin.hasMany(models.transaction, { foreignKey: 'adminId'});
+		Admin.belongsTo(models.user, { foreignKey: 'userId' });
   };
   return Admin;
 };
