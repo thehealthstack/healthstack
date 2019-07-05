@@ -23,7 +23,7 @@ module.exports = {
 					unique: true
 				},
 				smsMessageId: {
-					type: DataTypes.STRING,
+					type: Sequelize.STRING,
 					unique: true
 				},
 				patientId: {
