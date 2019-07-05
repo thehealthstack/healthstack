@@ -1,48 +1,23 @@
-const AWS = require("aws-sdk");
-const { awsAccessKeyId, awsSecretAccessKey, region } = require('../config');
-
-AWS.config.update({
-  accessKeyId: awsAccessKeyId,
-  secretAccessKey: awsSecretAccessKey,
-  region: region
+const { africasTalkingApiKey, africasTalkingApiUsername } = require('../config');
+const AfricasTalking = require('africastalking')({
+	apiKey: africasTalkingApiKey,
+	username: africasTalkingApiUsername
 });
 
-const setSmsParams = (to, smsText) => {
-  let params = {
-	MessageAttributes: {
-		'AWS.SNS.SMS.SMSType': {
-		   DataType: 'String',
-		   StringValue: 'Transactional'
-		}
-	},
-    Message: smsText,
-    PhoneNumber: to //E.164_PHONE_NUMBER
-  };
-  return params;
-}
+const smsService = AfricasTalking.SMS;
 
-const generateSmsText = (lab, results) => {
-  resultLinks = "";
-  for (let result of results) {
-    resultLinks = results + "\n";
-  }
+exports.setSmsParams = (to, smsText) => {
+	return {
+		to: to,
+		message: smsText,
+	};
+};
 
-  return `
-	Hello,
-	Hope you are enjoying your time. Here are the results of the 
-	exams you did at ${lab}:
-	${resultLinks}
-	Best,
-	${lab}
-	`;
-}
+exports.generateSmsText = (lab, results) => {
+  return "Hello, Hope you are enjoying your time. Here are the results of the \n exams you did at " + lab + ":\n" + resultLinks + "\nBest,\n" + lab;
+};
 
-const publishSMS = (to, smsText) => {
-  return new AWS.SNS({ apiVersion: "2010-03-31" })
-    .publish(setSmsParams(to, smsText))
-    .promise();
-}
+exports.publishSMS = (to, smsText, setSmsParams) => {
+  return smsService.send(setSmsParams(to, smsText));
+};
 
-exports.setSmsParams = setSmsParams;
-exports.generateSmsText = generateSmsText;
-exports.publishSMS = publishSMS;
