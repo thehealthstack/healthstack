@@ -87,6 +87,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Organization.associate = function(models) {
 		Organization.hasMany(models.medicalresult, { foreignKey: 'organizationId'});
+		Organization.hasMany(models.admin, { foreignKey: 'organizationId'});
   };
   return Organization;
 };
