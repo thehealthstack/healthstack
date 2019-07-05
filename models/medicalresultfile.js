@@ -61,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
 		}
   }, {});
   MedicalResultFile.associate = function(models) {
-		// associations can be defined here
+	MedicalResultFile.belongsTo(models.medicalresult, { foreignKey: 'medicalResultId'})
   };
   return MedicalResultFile;
 };
