@@ -81,7 +81,11 @@ module.exports = (sequelize, DataTypes) => {
 		}
   }, {});
   MedicalResult.associate = function(models) {
-    MedicalResult.hasMany(models.medicalresultfile, { foreignKey: 'medicalResultId'});
+	MedicalResult.hasMany(models.medicalresultfile, { foreignKey: 'medicalResultId'});
+	MedicalResult.belongsTo(models.patient, { foreignKey: 'patientId'});
+	MedicalResult.belongsTo(models.admin, { foreignKey: 'adminId'});
+	MedicalResult.belongsTo(models.organization, { foreignKey: 'organizationId'});
+	MedicalResult.hasOne(models.transaction, { foreignKey: 'medicalResultId'});
   };
   return MedicalResult;
 };
