@@ -109,7 +109,8 @@ module.exports = (sequelize, DataTypes) => {
 		}
   }, {});
   Transaction.associate = function(models) {
-    Transaction.belongsTo(models.medicalresult, { foreignKey: 'medicalResultId'});
+	Transaction.belongsTo(models.medicalresult, { foreignKey: 'medicalResultId'});
+	Transaction.belongsTo(models.patient, { foreignKey: 'patientId'});
   };
   return Transaction;
 };
