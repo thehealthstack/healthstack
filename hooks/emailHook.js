@@ -1,9 +1,7 @@
-const express = require('express');
 const { transaction } = require('../models');
-const emailHookRouter = express.Router();
 
 
-emailHookRouter.post('/emailhook', (req, res, next) => {
+exports.emailHook = (req, res, next) => {
 	let body = ''
 
 	req.on('data', (chunk) => {
@@ -19,7 +17,7 @@ emailHookRouter.post('/emailhook', (req, res, next) => {
 		}
 
 		if (payload.Type === 'Notification') {
-			
+
 			if(message.eventType === 'Delivery'){
 				//email transaction succeeded
 				transaction.update({ emailTransactionStatus: 'success'}, { returning: true, where: { emailMessageId: message.messageId }})
@@ -33,7 +31,7 @@ emailHookRouter.post('/emailhook', (req, res, next) => {
 				});
 			}
 
-			if(message.eventType === 'Bounce' || message.eventType === 'Reject' 
+			if(message.eventType === 'Bounce' || message.eventType === 'Reject'
 			|| message.eventType === 'Rendering Failure'){
 				//email transaction failed
 				transaction.update({ emailTransactionStatus: 'failed'}, { returning: true, where: { emailMessageId: message.messageId }})
@@ -49,8 +47,5 @@ emailHookRouter.post('/emailhook', (req, res, next) => {
 
 		}
 	});
-  
 
-});
-
-exports.emailHookRouter = emailHookRouter;
+};
