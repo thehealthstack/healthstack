@@ -32,12 +32,12 @@ const createTemplate = () => {
 }
 
 const generateHtmlBody = (data) => {
-	return `<h4>Hello</h4><br/>, <p>Hope you are enjoying your time. Here are the results of the exams you did at ${data.lab}:</p>${data.results}<br/><h4>Best,${data.lab}</h4>`;
+	return `<h4>Hello</h4><br/>, <p>Here are the results of the exams you did at ${data.lab}:</p>${data.results}<br/><h4>Best,${data.lab}</h4>`;
 };
 
 const generateTextBody = (data) => {
 	return `Hello,
-	Hope you are enjoying your time. Here are the results of the exams you did at ${data.lab}:
+	Here are the results of the exams you did at ${data.lab}:
 	${data.results} 
 	Best,
 	${data.lab}`;
