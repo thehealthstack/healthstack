@@ -7,25 +7,25 @@ AWS.config.update({
 	region: region });
 
 let bucket = new AWS.S3({
-    Bucket: centrePasteurYaoundeBucket
+		Bucket: centrePasteurYaoundeBucket
 });
 
 exports.uploadfiles = (req, res, next) => {
 	let files = req.files;
-	
+
 	Promise.all(files.map(file => {
 		let params = {
 			Bucket: centrePasteurYaoundeBucket,
-        	Key: file.originalname,
-        	Body: file.buffer,
-        	ACL: 'public-read'
+					Key: file.originalname,
+					Body: file.buffer,
+					ACL: 'public-read'
 		};
 
 		return bucket.upload(params).promise();
 	}))
 	.then(uploadedObjects => {
-		res.locals.uploadedFiles = uploadedObjects.map(fileObject => fileObject.Location);
-		next();
+		let uploadedFiles = uploadedObjects.map(fileObject => fileObject.Location);
+		res.json(uploadedFiles);
 	})
 	.catch(err => {
 		err.status = 500;
@@ -33,4 +33,3 @@ exports.uploadfiles = (req, res, next) => {
 		next(err);
 	});
 };
-
