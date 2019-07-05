@@ -1,57 +1,45 @@
-const express = require('express');
-const { user, admin } = require('../models');
+const { user, admin, organization } = require('../models');
 const bcrypt = require('bcrypt');
-const authRouter = express.Router();
+const { validationResult } = require('express-validator/check');
 
-
-authRouter.post('/login', [
-	check("email")
-      .isEmail()
-      .withMessage("Email format is not valid"),
-    check("password")
-      .isLength({ min: 8 })
-      .withMessage("Password must be atleast 8 characters")
-], (req, res, next) => {
+exports.login = (req, res, next) => {
 
 	const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
 	}
-	
+
 	let email = req.body.email;
 	let password = req.body.password;
 
 	user.findOne({ where: {
-		email: email,
-		role: 'lab agent'
-	}, include: [ admin, organization ]})
+		email: email
+	}, include: [ {model: admin, include: [ organization ]}]})
 	.then(userResp => {
-		if(userResp[0]){
-			if(bcrypt.compareSync(password, userResp[0].admin[0].password)){
-				req.session.user = userResp[0];
-				res.status(200).json(req.session.user);
+		if(userResp.dataValues){
+			if(bcrypt.compareSync(password, userResp.dataValues.admin.dataValues.password)){
+				req.session.user = userResp.dataValues;
+				return res.status(200).json(req.session);
 			} else {
-				res.status(401).send({msg: 'Email/Password incorrect'});
+				return res.status(401).send({msg: 'Email/Password incorrect'});
 			}
 		}else{
-			res.status(401).send({msg: 'Your are not authorized'});
+			return res.status(401).send({msg: 'Your are not authorized'});
 		}
 	})
 	.catch(err => {
 		err.status = 500;
 		err.msg = 'Login Failed';
-		next(err);
+		return next(err);
 	});
-});
+};
 
 
-authRouter.post('/logout', (req, res, next) => {
+exports.logout = (req, res, next) => {
 	req.session.destroy(function(err) {
 		if(err){
-			next(err);
+			return next(err);
 		}
-		res.status(200).json({msg: 'Logout successfull'});
+		return res.status(200).json({msg: 'Logout successfull'});
 	});
-});
-
-exports.authRouter = authRouter;
+};
