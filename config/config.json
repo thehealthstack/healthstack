@@ -14,10 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "healthstacker",
+    "password": "fomeneodiwuor",
+    "database": "healthstack",
+    "host": "healthstackdb.c6ydarosm5y0.eu-west-1.rds.amazonaws.com",
+    "dialect": "postgres"
   }
 }
