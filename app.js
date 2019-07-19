@@ -29,7 +29,7 @@ const multerSetting = multer({ storage: storage });
 const app = express();
 const router = express.Router();
 const redisClient = redis.createClient({
-	host: 'localhost',
+	host: 'redis',
 	port: 6379,
 	password: 'reiDwPYv2T7oGVPVdCvbouV2wGLxtEOxVIWgj5jo1EJvywW6A6bffMju2HWyexUEk8zUtyag3x/5kiRb',
 });
@@ -68,7 +68,7 @@ const csrfMiddleware = csurf({
 app.use(helmet());
 app.use(
 	cors({
-		origin: "http://localhost:8080",
+		origin: "*",
 		credentials: true,
 	})
 );
