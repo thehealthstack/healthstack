@@ -68,7 +68,7 @@ const csrfMiddleware = csurf({
 app.use(helmet());
 app.use(
 	cors({
-		origin: "*",
+		origin: "http://www.healthstack.app.s3-website-eu-west-1.amazonaws.com",
 		credentials: true,
 	})
 );
