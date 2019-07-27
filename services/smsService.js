@@ -14,7 +14,7 @@ exports.setSmsParams = (to, smsText) => {
 };
 
 exports.generateSmsText = (lab, results) => {
-  return "Hello, Hope you are enjoying your time. Here are the results of the \n exams you did at " + lab + ":\n" + resultLinks + "\nBest,\n" + lab;
+  return "Hello, Hope you are enjoying your time. Here are the results of the \n exams you did at " + lab + ":\n" + results + "\nBest,\n" + lab;
 };
 
 exports.publishSMS = (to, smsText, setSmsParams) => {
