@@ -29,9 +29,9 @@ const multerSetting = multer({ storage: storage });
 const app = express();
 const router = express.Router();
 const redisClient = redis.createClient({
-	host: 'redis',
+	host: "redis-sessionstore.gdbevf.clustercfg.euw1.cache.amazonaws.com",
+	password: "wYZztW9KXNL+88oZVraKRfsyltxDySdX+VJ5oXTYTmkAXo7yVcpbgDFi4kjxoiYdeu4aqxe+PW+3PFNS",
 	port: 6379,
-	password: 'reiDwPYv2T7oGVPVdCvbouV2wGLxtEOxVIWgj5jo1EJvywW6A6bffMju2HWyexUEk8zUtyag3x/5kiRb',
 });
 
 redisClient.on('error', function (err) {
@@ -83,8 +83,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //========================================
 // Routes
 //========================================
-router.get('/api/getcsrftoken', function (req, res) {
+router.get("/api/getcsrftoken", function (req, res) {
 		return res.json({ csrfToken: req.csrfToken() });
+});
+router.get("/api/", function (req, res){
+	return res.status(200).json({"message": "up"});
 });
 router.route("/api/login").post(validations.auth.login, auth.login);
 
