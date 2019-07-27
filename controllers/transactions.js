@@ -114,7 +114,7 @@ exports.updateTransaction = (req, res, next) => {
 exports.createTransaction = (req, res, next) => {
   let smsText = smsService.generateSmsText(
     req.session.user.admin.organization.name,
-    req.body.resultFiles
+    req.body.resultFiles.join(", ")
   );
   Promise.all([
     smsService.publishSMS(req.body.recipientPhoneNumber, smsText, smsService.setSmsParams),
