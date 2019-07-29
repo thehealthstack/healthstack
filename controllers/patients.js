@@ -50,14 +50,14 @@ exports.createPatient = (req, res, next) => {
 
   req.body.status = "pending";
   req.body.role = "patient";
-
+  
   user
-		.findOne({ include: [patient], where: { telephone: req.body.telephone }})
+		.findOne({ where: { telephone: req.body.telephone }, include: [{ model: patient }] })
 		.then(searchRes => {
 			if(searchRes !== null){
 				return res.status(200).json(searchRes.dataValues);
 			}
-
+      
 			return user.create({
 				firstName: req.body.firstName,
         lastName: req.body.lastName,
