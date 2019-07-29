@@ -4,63 +4,24 @@ const emailService = require("../services/emailService");
 const { validationResult } = require("express-validator/check");
 
 exports.getTransactions = (req, res, next) => {
-  if (!req.query) {
-		console.log("Processing transaction without query");
-    transaction
-      .findAll({
-        include: [
-          {
-            model: medicalresult,
-            include: [{ model: patient, include: [user] }]
-          }
-        ]
-      })
-      .then(resp => {
-        if (resp.length === 0)
-          return res.status(404).json({ msg: "Not Found" });
-        return res.status(200).json(resp);
-      })
-      .catch(err => {
-        err.status = 500;
-        err.msg = "Query for transactions failed";
-        return next(err);
-      });
-  } else {
-    if (req.query.email) {
-      transaction
-        .findAll({
-          include: [medicalresult, patient],
-          where: { email: req.query.email }
-        })
-        .then(resp => {
-          if (resp.length === 0) res.status(404).send({ msg: "Not Found" });
-          return res.status(200).json(resp);
-        })
-        .catch(err => {
-          err.status = 500;
-          err.msg = "Query for transactions failed";
-          return next(err);
-        });
-    }
-
-    if (req.query.telephone) {
-      transaction
-        .findAll({
-          include: [medicalresult, patient],
-          where: { telephone: req.query.telephone }
-        })
-        .then(resp => {
-          if (resp.length === 0)
-            return res.status(404).send({ msg: "Not Found" });
-          return res.status(200).json(resp);
-        })
-        .catch(err => {
-          err.status = 500;
-          err.msg = "Query for transactions failed";
-          return next(err);
-        });
-    }
-  }
+  transaction
+    .findAll({
+      include: [
+        {
+          model: medicalresult,
+          include: [{ model: patient, include: [user] }]
+        }
+      ]
+    })
+    .then(resp => {
+      if (resp.length === 0) return res.status(404).json({ msg: "Not Found" });
+      return res.status(200).json(resp);
+    })
+    .catch(err => {
+      err.status = 500;
+      err.msg = "Query for transactions failed";
+      return next(err);
+    });
 };
 
 exports.getTransactionById = (req, res, next) => {
@@ -117,7 +78,11 @@ exports.createTransaction = (req, res, next) => {
     req.body.resultFiles.join(", ")
   );
   Promise.all([
-    smsService.publishSMS(req.body.recipientPhoneNumber, smsText, smsService.setSmsParams),
+    smsService.publishSMS(
+      req.body.recipientPhoneNumber,
+      smsText,
+      smsService.setSmsParams
+    ),
     emailService.createSendEmailPromise(req.body.recipientEmailAddresses, {
       results: req.body.resultFiles.join(", "),
       lab: req.session.user.admin.organization.name
