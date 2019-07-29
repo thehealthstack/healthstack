@@ -2,9 +2,16 @@ version: '2.1'
 
 services:
   healthstack:
-    image: healthstack
     build: .
     environment:
       NODE_ENV: development
     ports:
       - 3000:3000
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    command: redis-server --requirepass wYZztW9KXNL+88oZVraKRfsyltxDySdX+VJ5oXTYTmkAXo7yVcpbgDFi4kjxoiYdeu4aqxe+PW+3PFNS
+    ports: 
+      - 6379:6379
