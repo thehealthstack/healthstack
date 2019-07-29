@@ -10,7 +10,7 @@ module.exports = {
         { type: Sequelize.QueryTypes.SELECT }
       ), queryInterface.sequelize
 			.query(
-				"SELECT * FROM users WHERE email='vladimirfomene@gmail.com'",
+				"SELECT * FROM users WHERE email='vladimirfomene@outlook.com'",
 				{ type: Sequelize.QueryTypes.SELECT }
 			)])
       .then(([orgs, users]) => {
