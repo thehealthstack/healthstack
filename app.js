@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
 const csurf = require('csurf');
 const logger = require("morgan");
 const helmet = require("helmet");
@@ -20,7 +19,7 @@ const { emailHook } = require("./hooks/emailHook");
 const { smsHook } = require("./hooks/smsHook");
 const auth = require("./controllers/auth");
 const { uploadfiles } = require('./services/fileUploadService');
-const { port, sessionSecret } = require("./config");
+const { redisPort, redisPassword, redisHost, port, sessionSecret } = require("./config");
 const { isAdmin, isAdminOrLabAgent } = require("./helpers/checkAuthentications");
 const validations = require("./helpers/validations");
 
@@ -29,9 +28,9 @@ const multerSetting = multer({ storage: storage });
 const app = express();
 const router = express.Router();
 const redisClient = redis.createClient({
-	host: 'localhost',
-	port: 6379,
-	password: 'reiDwPYv2T7oGVPVdCvbouV2wGLxtEOxVIWgj5jo1EJvywW6A6bffMju2HWyexUEk8zUtyag3x/5kiRb',
+	host: redisHost,
+	port: redisPort,
+	password: redisPassword,
 });
 
 redisClient.on('error', function (err) {
@@ -72,7 +71,6 @@ app.use(
 		credentials: true,
 	})
 );
-app.use(cookieParser());
 //app.use(csrfMiddleware);
 app.use(session(sess));
 if (app.get("env") === "development") app.use(logger("dev"));
