@@ -19,7 +19,7 @@ const { emailHook } = require("./hooks/emailHook");
 const { smsHook } = require("./hooks/smsHook");
 const auth = require("./controllers/auth");
 const { uploadfiles } = require('./services/fileUploadService');
-const { port, sessionSecret } = require("./config");
+const { redisPort, redisPassword, redisHost, port, sessionSecret } = require("./config");
 const { isAdmin, isAdminOrLabAgent } = require("./helpers/checkAuthentications");
 const validations = require("./helpers/validations");
 
@@ -28,9 +28,9 @@ const multerSetting = multer({ storage: storage });
 const app = express();
 const router = express.Router();
 const redisClient = redis.createClient({
-	host: "redis-sessionstore.gdbevf.clustercfg.euw1.cache.amazonaws.com",
-	password: "wYZztW9KXNL+88oZVraKRfsyltxDySdX+VJ5oXTYTmkAXo7yVcpbgDFi4kjxoiYdeu4aqxe+PW+3PFNS",
-	port: 6379,
+	host: redisHost,
+	password: redisPassword,
+	port: redisPort,
 });
 
 redisClient.on('error', function (err) {
