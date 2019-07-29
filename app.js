@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
 const csurf = require('csurf');
 const logger = require("morgan");
 const helmet = require("helmet");
@@ -68,11 +67,10 @@ const csrfMiddleware = csurf({
 app.use(helmet());
 app.use(
 	cors({
-		origin: "http://www.healthstack.app.s3-website-eu-west-1.amazonaws.com",
+		origin: "https://www.healthstack.app",
 		credentials: true,
 	})
 );
-app.use(cookieParser());
 //app.use(csrfMiddleware);
 app.use(session(sess));
 if (app.get("env") === "development") app.use(logger("dev"));
